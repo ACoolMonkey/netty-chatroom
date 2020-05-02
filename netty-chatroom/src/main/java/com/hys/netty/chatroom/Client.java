@@ -7,6 +7,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.CharsetUtil;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,8 @@ public class Client {
                     @Override
                     protected void initChannel(SocketChannel ch) {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast(new StringEncoder());
-                        pipeline.addLast(new StringDecoder());
+                        pipeline.addLast(new MessageEncoder());
+                        pipeline.addLast(new MessageDecoder());
                         ch.pipeline().addLast(new ClientHandler());
                     }
                 });
@@ -47,8 +49,10 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String msg = scanner.nextLine();
+            byte[] bytes = msg.getBytes(CharsetUtil.UTF_8);
+            MessageProtocol messageProtocol = MessageProtocol.builder().length(bytes.length).content(bytes).build();
             //通过channel发送到服务器端
-            channel.writeAndFlush(msg);
+            channel.writeAndFlush(messageProtocol);
         }
         channelFuture.channel().closeFuture().sync();
     }
