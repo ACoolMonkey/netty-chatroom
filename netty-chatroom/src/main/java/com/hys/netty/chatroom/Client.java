@@ -35,7 +35,6 @@ public class Client {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new StringEncoder());
                         pipeline.addLast(new StringDecoder());
-
                         ch.pipeline().addLast(new ClientHandler());
                     }
                 });

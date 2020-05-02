@@ -35,7 +35,6 @@ public class Server {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new StringDecoder());
                         pipeline.addLast(new StringEncoder());
-
                         ch.pipeline().addLast(new ServerHandler());
                     }
                 });
