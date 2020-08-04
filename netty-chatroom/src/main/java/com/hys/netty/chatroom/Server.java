@@ -20,10 +20,10 @@ public class Server {
 
     @SneakyThrows
     public static void main(String[] args) {
-        @Cleanup("shutdownGracefully") EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        @Cleanup("shutdownGracefully") EventLoopGroup workerGroup = new NioEventLoopGroup();
+        @Cleanup("shutdownGracefully") EventLoopGroup parentGroup = new NioEventLoopGroup(1);
+        @Cleanup("shutdownGracefully") EventLoopGroup childGroup = new NioEventLoopGroup();
         ServerBootstrap bootstrap = new ServerBootstrap()
-                .group(bossGroup, workerGroup)
+                .group(parentGroup, childGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
