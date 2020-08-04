@@ -29,17 +29,15 @@ public class ServerHandler extends SimpleChannelInboundHandler<MessageProtocol> 
         String content = new String(msg.getContent(), CharsetUtil.UTF_8);
         Channel channel = ctx.channel();
         CHANNEL_GROUP.forEach(ch -> {
+            String ct;
             if (ch == channel) {
-                String ct = "[ 自己 ] 发送了消息：" + content;
-                byte[] bytes = ct.getBytes(CharsetUtil.UTF_8);
-                MessageProtocol messageProtocol = MessageProtocol.builder().length(bytes.length).content(bytes).build();
-                ch.writeAndFlush(messageProtocol);
+                ct = "[ 自己 ] 发送了消息：" + content;
             } else {
-                String ct = "[ 客户端 " + channel.remoteAddress() + " ] 发送了消息：" + content;
-                byte[] bytes = ct.getBytes(CharsetUtil.UTF_8);
-                MessageProtocol messageProtocol = MessageProtocol.builder().length(bytes.length).content(bytes).build();
-                ch.writeAndFlush(messageProtocol);
+                ct = "[ 客户端 " + channel.remoteAddress() + " ] 发送了消息：" + content;
             }
+            byte[] bytes = ct.getBytes(CharsetUtil.UTF_8);
+            MessageProtocol messageProtocol = MessageProtocol.builder().length(bytes.length).content(bytes).build();
+            ch.writeAndFlush(messageProtocol);
         });
     }
 
