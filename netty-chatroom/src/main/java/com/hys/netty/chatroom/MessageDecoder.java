@@ -19,7 +19,10 @@ public class MessageDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
         if (in.readableBytes() < 4) {
-            //读取小于4字节，说明连MessageProtocol里的length字段都没读取完整，那么就继续下一次读取
+            /*
+            读取小于4字节，说明连MessageProtocol里的length字段都没读取完整，那么就继续下一次读取
+            还有一种情况是读取content也小于4字节，此时虽然也继续下一次读取，但是是无妨的，因为length字段已经有了正确值
+             */
             return;
         }
         if (length == 0) {
