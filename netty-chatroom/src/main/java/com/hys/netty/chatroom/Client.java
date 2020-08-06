@@ -5,6 +5,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -34,7 +35,7 @@ public class Client {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new MessageEncoder());
                         pipeline.addLast(new MessageDecoder());
-                        ch.pipeline().addLast(new ClientHandler());
+                        pipeline.addLast(new ClientHandler());
                     }
                 });
         ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 9000).sync();

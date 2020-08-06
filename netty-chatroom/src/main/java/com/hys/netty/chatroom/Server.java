@@ -33,7 +33,7 @@ public class Server {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new MessageEncoder());
                         pipeline.addLast(new MessageDecoder());
-                        ch.pipeline().addLast(new ServerHandler());
+                        pipeline.addLast(new ServerHandler());
                     }
                 });
         log.info("聊天室server启动。。。");
