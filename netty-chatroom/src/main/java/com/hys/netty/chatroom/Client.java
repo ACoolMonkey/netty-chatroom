@@ -23,9 +23,9 @@ public class Client {
 
     @SneakyThrows
     public static void main(String[] args) {
-        @Cleanup("shutdownGracefully") EventLoopGroup group = new NioEventLoopGroup();
+        @Cleanup("shutdownGracefully") EventLoopGroup workerGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap()
-                .group(group)
+                .group(workerGroup)
                 .channel(NioSocketChannel.class)
                 .handler(new ChannelInitializer<SocketChannel>() {
 
