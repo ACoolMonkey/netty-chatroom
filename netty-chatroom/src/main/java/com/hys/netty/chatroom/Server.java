@@ -36,8 +36,8 @@ public class Server {
                         pipeline.addLast(new ServerHandler());
                     }
                 });
-        log.info("聊天室server启动。。。");
         ChannelFuture cf = bootstrap.bind(9000).sync();
+        log.info("聊天室server启动。。。");
         cf.channel().closeFuture().sync();
     }
 }
