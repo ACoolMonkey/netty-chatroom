@@ -37,7 +37,7 @@ public class Server {
                     }
                 });
         ChannelFuture cf = bootstrap.bind(9000).sync();
-        log.info("聊天室server启动。。。");
+        log.info("聊天室server启动成功");
         cf.channel().closeFuture().sync();
     }
 }
